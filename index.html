@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Focus Compass</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-6">
+
+  <div class="bg-white p-6 rounded-xl shadow-lg max-w-md w-full space-y-4">
+    <h1 class="text-xl font-bold text-center">Focus Compass</h1>
+
+    <div class="text-center">
+      <button id="startBtn" class="bg-green-500 text-white px-4 py-2 rounded">Start Focus</button>
+      <button id="stopBtn" class="bg-red-500 text-white px-4 py-2 rounded hidden">Stop Focus</button>
+    </div>
+
+    <div id="reflectionForm" class="hidden space-y-3">
+      <p class="font-semibold text-gray-700">What distracted you?</p>
+      <input type="text" id="distractionInput" class="w-full border p-2 rounded" placeholder="e.g. Phone, Thoughts, Noise" />
+      <button id="submitReflection" class="bg-blue-600 text-white px-4 py-2 rounded w-full">Submit Reflection</button>
+    </div>
+
+    <div id="log" class="text-sm text-gray-600 space-y-2">
+      <h2 class="font-semibold">Focus Timeline:</h2>
+      <ul id="logList" class="list-disc pl-5"></ul>
+    </div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const reflectionForm = document.getElementById("reflectionForm");
+    const distractionInput = document.getElementById("distractionInput");
+    const submitReflection = document.getElementById("submitReflection");
+    const logList = document.getElementById("logList");
+
+    let focusStart;
+
+    startBtn.addEventListener("click", () => {
+      focusStart = new Date();
+      startBtn.classList.add("hidden");
+      stopBtn.classList.remove("hidden");
+    });
+
+    stopBtn.addEventListener("click", () => {
+      stopBtn.classList.add("hidden");
+      reflectionForm.classList.remove("hidden");
+    });
+
+    submitReflection.addEventListener("click", () => {
+      const distraction = distractionInput.value.trim() || "No distractions logged";
+      const focusEnd = new Date();
+      const duration = Math.round((focusEnd - focusStart) / 1000);
+
+      const entry = document.createElement("li");
+      entry.textContent = `Focused for ${duration}s — Distraction: ${distraction}`;
+      logList.appendChild(entry);
+
+      distractionInput.value = "";
+      reflectionForm.classList.add("hidden");
+      startBtn.classList.remove("hidden");
+    });
+  </script>
+
+</body>
+</html>
